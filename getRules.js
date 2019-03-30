@@ -8,8 +8,7 @@ module.exports = postcss.plugin('postcss-get-sass-variables', (callback) => {
         let special = scssCode.match(/@function .*\)|@mixin .*\)/g) || []; // hunting vars to ignore (mixin / functions)
         special = special.map(str => str.match(/\$[A-Za-z-_]*/g) || []);
         special = [].concat(...special);
-        ignoredVars = [...special, ...ignoredVars]; // join with the known ignored vars
-        console.log(ignoredVars);
+        ignoredVars = [...special, ...ignoredVars]; // join with the known ignored vars        
         let vars = scssCode.match(/\$[A-Za-z-_]*/g) || []; // getting all variables from file         
         vars = vars
             .filter(x => !ignoredVars.includes(x))
