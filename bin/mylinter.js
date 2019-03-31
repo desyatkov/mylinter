@@ -5,10 +5,12 @@ const path = require('path');
 const fs = require('fs')
 const postcss = require('postcss')
 const postScss = require('postcss-scss');
+const autoPrefixer = require('autoprefixer');
 const YAML = require('yaml');
 const _ = require('lodash');
 const postcssGetVars = require('../getRules.js');
 let variablesScss = [];
+let didPrefix = null;
 const allDecl = postcssGetVars((obj) => variablesScss = obj.slice(0));
 
 const checkStatus = () => {
@@ -21,7 +23,7 @@ const checkStatus = () => {
         const relPath = path.relative(__dirname, link);
 
         fs.readFile(path.resolve(link,'style.scss'), (err, css) => {
-            postcss([allDecl])
+            postcss([allDecl, autoPrefixer])
             .process(css, { syntax: postScss, from: undefined })
             .then(() => {
                 const file = fs.readFileSync(path.resolve(link,'settings.yml'), 'utf8')
@@ -95,7 +97,15 @@ const checkStatus = () => {
                     return
                 }
 
+                if (!didPrefix) {
+                    log(`${path.resolve(link, 'style.scss')} gets autoprefix`);
+                    fs.writeFileSync(path.resolve(link, 'style.scss'), res.css, 'utf8');                                          
+                    process.exitCode = 0;
+                    return
+                }    
+
                 process.exitCode = 0;
+                return
             })
         })
     })
