@@ -12,7 +12,7 @@ module.exports = ({
     variablesScss = 'expected scss variables',
     relPath = 'expected rel path'
 } = {}) => {
-
+    log(variablesYmlKeys,variablesYml,variablesScss,relPath)
     // YAML PARSING ERROR
     if (doc.errors.length > 0) {
         log(`${chalk.red('✖')} ${chalk.bgHex('#ffa500').keyword('black').bold('YAML error').padEnd(77, '.')}${doc.errors[0].message}`, `template ${relPath}`)
@@ -24,7 +24,8 @@ module.exports = ({
     }
     // YAML MANDATORY KEYS
     if (!variablesYmlKeys.includes('default_css_attributes') || !variablesYmlKeys.includes('css_form')) {
-        log(`${chalk.red('✖')} ${!variablesYml.default_css_attributes?'default_css_attributes':'css_form'} missing in YAML`, `template ${path.relative(__dirname, relPath)}`)
+        const missing = _.xor(variablesYmlKeys, ['default_css_attributes', 'css_form']);
+        log(`${chalk.red('✖')} ${missing} missing in YAML`, `template ${path.relative(__dirname, relPath)}`)
         result = {
             valid: false,
             emptyYml: null
@@ -94,6 +95,6 @@ module.exports = ({
             emptyYml: false
         };
     } else {
-    	return result;
+        return result;
     }
 }
