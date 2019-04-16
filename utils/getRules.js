@@ -1,7 +1,7 @@
 const postcss = require('postcss')
 
 module.exports = postcss.plugin('postcss-get-sass-variables', (callback) => {
-    let ignoredVars = ['$element-selector'] // list of variables we want to exclude   
+    let ignoredVars = ['$element-selector', '$wrapper-selector'] // list of variables we want to exclude   
 
     return (css) => {
         let scssCode = css['source']['input']['css'];
