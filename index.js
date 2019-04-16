@@ -18,8 +18,7 @@ function writeAutoprefixToFile(link, data) {
 }
 
 module.exports = () => {
-    const args = process.argv.slice(2)
-    console.log(args);
+    const args = process.argv.slice(2)    
     const pathLink = args.map(inx => path.dirname(inx))
     const uniqueLink = [...new Set(pathLink)];
 

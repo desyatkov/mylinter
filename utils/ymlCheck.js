@@ -11,8 +11,7 @@ module.exports = ({
     variablesYml = 'expected yml variables',
     variablesScss = 'expected scss variables',
     relPath = 'expected rel path'
-} = {}) => {
-    log(variablesYmlKeys,variablesYml,variablesScss,relPath)
+} = {}) => {    
     // YAML PARSING ERROR
     if (doc.errors.length > 0) {
         log(`${chalk.red('✖')} ${chalk.bgHex('#ffa500').keyword('black').bold('YAML error').padEnd(77, '.')}${doc.errors[0].message}`, `template ${relPath}`)
