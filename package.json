@@ -13,9 +13,10 @@
   "keywords": [],
   "license": "ISC",
   "browserslist": [
-    "last 2 versions",
-    "> 5%",
-    "IE 9"
+    ">15%", 
+    "last 20 versions", 
+    "Firefox ESR", 
+    "Opera 12.1"
   ],
   "devDependencies": {
     "chalk": "^2.4.1",
