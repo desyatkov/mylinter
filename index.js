@@ -14,10 +14,11 @@ function writeAutoprefixToFile(link, data) {
     log(`Prefixing ${chalk('👌')} ${path.resolve(link, 'style.scss')}`);
     fs.writeFileSync(path.resolve(link, 'style.scss'), data, 'utf8');
     process.exitCode = 0;
+    return;
 }
 
 module.exports = () => {
-    const args = process.argv.slice(2)
+    const args = process.argv.slice(2)    
     const pathLink = args.map(inx => path.dirname(inx))
     const uniqueLink = [...new Set(pathLink)];
 
@@ -44,21 +45,35 @@ module.exports = () => {
                         variablesScss: variablesScss,
                         relPath: relPath
                     });
-                    
+                    log(ymlCheckStatus);
                     // if all our yml <--> scss checks are ok we can validate our scss stand alone                    
                     if (ymlCheckStatus['valid'] && ymlCheckStatus['emptyYml']) {
-                        require('./utils/scsscheck')(res.css, null, function(response) {                            
-                            response ? writeAutoprefixToFile(link,res.css) : process.exitCode = 2;;
+                        require('./utils/scsscheck')(res.css, null, function(response) {
+                            if (response) {
+                                writeAutoprefixToFile(link, res.css)
+                            } else {
+                                process.exitCode = 2;
+                                return;
+                            }
                         });
                     } else if (ymlCheckStatus['valid'] && !ymlCheckStatus['emptyYml']) {
                         require('./utils/scsscheck')(res.css, variablesScss, function(response) {
-                            response ? writeAutoprefixToFile(link,res.css) : process.exitCode = 2;;
+                            if (response) {
+                                writeAutoprefixToFile(link, res.css)
+                            } else {
+                                process.exitCode = 2;
+                                return;
+                            }
                         });
+                    } else if (!ymlCheckStatus['valid']) {
+                        process.exitCode = 2;
+                        return;
                     }
                 })
                 .catch((err) => {
                     log(`${chalk.red('😨')} ${chalk.bgHex('#fc0006').keyword('black').bold('uncaughtException:')} ${err}`);
                     process.exitCode = 2;
+                    return;
                 })
         })
     })
