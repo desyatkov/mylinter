@@ -10,9 +10,7 @@ module.exports = postcss.plugin('postcss-get-sass-variables', (callback) => {
         special = [].concat(...special);
         ignoredVars = [...special, ...ignoredVars]; // join with the known ignored vars        
         let vars = scssCode.match(/\$[A-Za-z-_]*/g) || []; // getting all variables from file         
-        vars = vars
-            .filter(x => !ignoredVars.includes(x))
-            .concat(ignoredVars.filter(x => !vars.includes(x))); // leaving the ignored vars out
+        vars = vars.filter(x => !ignoredVars.includes(x)); // leaving the ignored vars out
 
         callback([...new Set(vars)].map(item => item.replace('$', '')));
     };
