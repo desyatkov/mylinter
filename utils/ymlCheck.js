@@ -34,7 +34,8 @@ module.exports = ({
     // MAKE SURE YML CONTAINS SCSS VARIABLES
     if (variablesYml.default_css_attributes) {
         const variablesYmlNames = Object.keys(variablesYml.default_css_attributes);
-        const variablesXor = _.xor(variablesScss, variablesYmlNames);
+        // TODO disabled concordance between files variables
+        const variablesXor = _.xor(variablesYmlNames, variablesYmlNames);
 
         _.mixin({
             toPairsDeep: obj => _.flatMap(
@@ -68,7 +69,8 @@ module.exports = ({
         }
 
         // DIFF BETWEEN SASS AND YAML VARIABLES
-        if (variablesXor.length > 0) {
+        // TODO disabled concordance between files variables
+        /* if (variablesXor.length > 0) {
             const detectymlFile = (item, array) => {
                 const res = variablesYml.default_css_attributes[item] !== undefined ? ['YML', 'SCSS'] : ['SCSS', 'YML'];
                 return res;
@@ -81,7 +83,7 @@ module.exports = ({
                 valid: false,
                 emptyYml: null
             };
-        }
+        } */
     } // if we don't have any yml configuration, no need to compare it to scss
     if (!variablesYml.default_css_attributes && result === null) {
         return result = {
